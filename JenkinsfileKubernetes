@@ -1,0 +1,41 @@
+import java.io.*;  
+pipeline {
+    agent any
+    
+    environment {
+        GITREPO   = "https://github.com/ycordovac/practica_final_backend.git"
+        GITBRANCH = "test"
+        // KUBECONFIG = credentials('kubeconfig')
+    }
+
+    stages {
+        stage('Despliegue') {
+            steps {
+                // Configura la conexión a Kubernetes
+                // container('kubectl') {
+                //     sh "kubectl apply -f kubernetes/deployment.yaml"
+                // }
+                script {
+                    sh "pwd"
+                    sh "ls -la"
+                    sh "rm -rf practica_final_backend"
+                    sh "ls -la"
+                    sleep(3)
+                    sh "git clone -b $GITBRANCH $GITREPO"
+                    println('finaliza el script')
+                    sh "kubectl get ns"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Limpia los recursos de Kubernetes después del despliegue
+            // container('kubectl') {
+            //     sh "kubectl delete -f kubernetes/deployment.yaml"
+            // }
+            echo "$GITBRANCH -> $GITREPO"
+        }
+    }
+}

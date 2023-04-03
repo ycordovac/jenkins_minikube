@@ -1,0 +1,4 @@
+# Evitar conflictos con la rama
+kubeconfig/config
+kubeconfig/client.crt
+kubeconfig/client.key
