@@ -23,6 +23,7 @@ pipeline {
                     sleep(3)
                     sh "git clone -b $GITBRANCH $GITREPO"
                     println('finaliza el script')
+                    sh "kubectl get ns"
                 }
             }
         }
