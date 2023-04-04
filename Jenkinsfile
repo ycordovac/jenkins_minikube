@@ -1,4 +1,3 @@
-def versionPom = ""
 pipeline{
 	agent {
       kubernetes {
