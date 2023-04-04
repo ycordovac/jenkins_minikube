@@ -1,7 +1,4 @@
 def versionPom = ""
-def ca_crt = readFile('/var/jenkins_home/kubeconfig/ca.crt.b64').trim()
-def tls_crt = readFile('/var/jenkins_home/kubeconfig/client.crt.b64').trim()
-def tls_key = readFile('/var/jenkins_home/kubeconfig/client.key.b64').trim()
 pipeline{
 	agent {
       kubernetes {
@@ -12,7 +9,7 @@ metadata:
   name: ca-cert
 type: Opaque
 data:
-  tls.crt: ${"ca_crt"}
+  tls.crt: readFile('/var/jenkins_home/kubeconfig/ca.crt.b64').trim()
 ---
 apiVersion: v1
 kind: Secret
@@ -20,8 +17,8 @@ metadata:
   name: client-cert
 type: Opaque
 data:
-  tls.crt: ${"tls_crt"}
-  tls.key: ${"tls_key"}
+  tls.crt: readFile('/var/jenkins_home/kubeconfig/client.crt.b64').trim()
+  tls.key: readFile('/var/jenkins_home/kubeconfig/client.key.b64').trim()
 ---
 apiVersion: v1
 kind: Pod
