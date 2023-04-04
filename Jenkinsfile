@@ -1,4 +1,7 @@
 def versionPom = ""
+def ca_crt = readFile('/var/jenkins_home/kubeconfig/ca.crt.b64').trim()
+def tls_crt = readFile('/var/jenkins_home/kubeconfig/client.crt.b64').trim()
+def tls_key = readFile('/var/jenkins_home/kubeconfig/client.key.b64').trim()
 pipeline{
 	agent {
       kubernetes {
@@ -9,7 +12,7 @@ metadata:
   name: ca-cert
 type: Opaque
 file:
-  tls.crt: /var/jenkins_home/kubeconfig/ca.crt.b64
+  tls.crt: ${"ca_crt"}
 ---
 apiVersion: v1
 kind: Secret
@@ -17,8 +20,8 @@ metadata:
   name: client-cert
 type: Opaque
 data:
-  tls.crt: /var/jenkins_home/kubeconfig/client.crt.b64
-  tls.key: /var/jenkins_home/kubeconfig/client.key.b64
+  tls.crt: ${"tls_crt"}
+  tls.key: ${"tls_key"}
 ---
 apiVersion: v1
 kind: Pod
@@ -37,15 +40,15 @@ spec:
     - cat
     imagePullPolicy: IfNotPresent
     tty: true
-     - name: ca-cert
-    mountPath: /etc/ssl/certs/ca.crt
-    readOnly: true
+    - name: ca-cert
+      mountPath: /etc/ssl/certs/ca.crt
+      readOnly: true
     - name: client-cert
-    mountPath: /etc/ssl/certs/client.crt
-    readOnly: true
+      mountPath: /etc/ssl/certs/client.crt
+      readOnly: true
     - name: client-key
-    mountPath: /etc/ssl/private/client.key
-    readOnly: true
+      mountPath: /etc/ssl/private/client.key
+      readOnly: true
   volumes:
   - name: ca-cert
     secret:
