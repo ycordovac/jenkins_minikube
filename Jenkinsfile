@@ -4,6 +4,23 @@ pipeline{
       kubernetes {
         yaml '''
 apiVersion: v1
+kind: Secret
+metadata:
+  name: ca-cert
+type: Opaque
+file:
+  tls.crt: /var/jenkins_home/kubeconfig/ca.crt.b64
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: client-cert
+type: Opaque
+data:
+  tls.crt: /var/jenkins_home/kubeconfig/client.crt.b64
+  tls.key: /var/jenkins_home/kubeconfig/client.key.b64
+---
+apiVersion: v1
 kind: Pod
 spec:
   containers:
@@ -14,13 +31,31 @@ spec:
       name: docker-socket-volume
     securityContext:
       privileged: true
-  - name: kaniko
+    - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     command:
     - cat
     imagePullPolicy: IfNotPresent
     tty: true
+     - name: ca-cert
+    mountPath: /etc/ssl/certs/ca.crt
+    readOnly: true
+    - name: client-cert
+    mountPath: /etc/ssl/certs/client.crt
+    readOnly: true
+    - name: client-key
+    mountPath: /etc/ssl/private/client.key
+    readOnly: true
   volumes:
+  - name: ca-cert
+    secret:
+      secretName: ca-cert
+  - name: client-cert
+    secret:
+      secretName: client-cert
+  - name: client-key
+    secret:
+      secretName: client-cert
   - name: docker-socket-volume
     hostPath:
       path: /var/run/docker.sock
@@ -88,7 +123,7 @@ spec:
                 sh 'rm -r configuracion'
               }
             }
-
+            
             sh 'git clone https://github.com/ycordovac/kubernetes-helm-docker-config.git configuracion --branch test-implementation'
             sh 'kubectl apply -f configuracion/kubernetes-deployment/spring-boot-app/manifest.yml -n default --kubeconfig=configuracion/kubernetes-config/config'
           }
