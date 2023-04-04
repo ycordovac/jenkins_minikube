@@ -36,19 +36,19 @@ spec:
 
     environment {
         registryCredential='yandihlg'
-        registryBackend = 'yandihlg/backend-demo'
-        sonarcredential='admin'
+        // registryBackend = 'yandihlg/backend-demo'
+        // sonarcredential='admin'
 
-        DOCKERHUB_ID="yandihlg"
-        DOCKERHUB_CREDENTIALS=credentials("yandihlg")
-        DOCKER_IMAGE_NAME="yandihlg/practica-final-backend"
+        // DOCKERHUB_ID="yandihlg"
+        // DOCKERHUB_CREDENTIALS=credentials("yandihlg")
+        // DOCKER_IMAGE_NAME="yandihlg/practica-final-backend"
 
-        NEXUS_VERSION = "nexus3"
-        NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "192.168.49.4:8081"
-        NEXUS_REPOSITORY = "backdevelop"
-        NEXUS_CREDENTIAL_ID = "adminnexus"
-        version=null
+        // NEXUS_VERSION = "nexus3"
+        // NEXUS_PROTOCOL = "http"
+        // NEXUS_URL = "192.168.49.4:8081"
+        // NEXUS_REPOSITORY = "backdevelop"
+        // NEXUS_CREDENTIAL_ID = "adminnexus"
+        // version=null
     }
 	stages {
 
