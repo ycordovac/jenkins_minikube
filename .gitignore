@@ -2,3 +2,4 @@
 kubeconfig/config
 kubeconfig/client.crt
 kubeconfig/client.key
+kubeconfig/ca.crt
