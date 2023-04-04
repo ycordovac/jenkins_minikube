@@ -1,0 +1,32 @@
+apiVersion: v1
+clusters:
+  - cluster:
+      certificate-authority: configuracion/k8/kubernetes-config/ca.crt
+      extensions:
+        - extension:
+            last-update: Wed, 29 Mar 2023 16:53:07 CEST
+            provider: minikube.sigs.k8s.io
+            version: v1.29.0
+          name: cluster_info
+      server: https://192.168.49.2:8443
+    name: terraform
+contexts:
+  - context:
+      cluster: terraform
+      extensions:
+        - extension:
+            last-update: Wed, 29 Mar 2023 16:53:07 CEST
+            provider: minikube.sigs.k8s.io
+            version: v1.29.0
+          name: context_info
+      namespace: default
+      user: terraform
+    name: terraform
+current-context: terraform
+kind: Config
+preferences: {}
+users:
+  - name: terraform
+    user:
+      client-certificate: configuracion/k8/kubernetes-config/client.crt
+      client-key: configuracion/k8/kubernetes-config/client.key

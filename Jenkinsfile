@@ -1,24 +1,8 @@
+def versionPom = ""
 pipeline{
 	agent {
       kubernetes {
         yaml '''
-apiVersion: v1
-kind: Secret
-metadata:
-  name: ca-cert
-type: Opaque
-data:
-  tls.crt: aaa
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: client-cert
-type: Opaque
-data:
-  tls.crt: bbb
-  tls.key: ccc
----
 apiVersion: v1
 kind: Pod
 spec:
@@ -30,31 +14,13 @@ spec:
       name: docker-socket-volume
     securityContext:
       privileged: true
-    - name: kaniko
+  - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
     command:
     - cat
     imagePullPolicy: IfNotPresent
     tty: true
-    - name: ca-cert
-      mountPath: /etc/ssl/certs/ca.crt
-      readOnly: true
-    - name: client-cert
-      mountPath: /etc/ssl/certs/client.crt
-      readOnly: true
-    - name: client-key
-      mountPath: /etc/ssl/private/client.key
-      readOnly: true
   volumes:
-  - name: ca-cert
-    secret:
-      secretName: ca-cert
-  - name: client-cert
-    secret:
-      secretName: client-cert
-  - name: client-key
-    secret:
-      secretName: client-cert
   - name: docker-socket-volume
     hostPath:
       path: /var/run/docker.sock

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular-14-app
+  labels:
+    app: angular-14-app
+    type: front-end
+spec:
+  template:
+    metadata:
+      name: angular-14-app
+      labels:
+        app: angular-14
+        type: front-end
+    spec:
+      containers:
+        - name: angular-14-app
+          image: "yandihlg/angular-14-app:latest"
+          imagePullPolicy: Always
+  replicas: 1
+  selector:
+    matchLabels:
+      app: angular-14
+      type: front-end
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: spring-boot-app
+#spec:
+#  selector:
+#    app: spring-boot
+#  type: NodePort
+#  ports:
+#    - protocol: TCP
+#      targetPort: 8082
+#      port: 8082
+#      nodePort: 30001
