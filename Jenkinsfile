@@ -49,6 +49,7 @@ spec:
         NEXUS_REPOSITORY = "backdevelop"
         NEXUS_CREDENTIAL_ID = "adminnexus"
         version=null
+        BUILD_NUMBER = 1
     }
 	stages {
 
