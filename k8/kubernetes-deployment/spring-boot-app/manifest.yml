@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: spring-boot-app
-          image: "yandihlg/backend-demo:latest"
+          image: "yandihlg/practica-final-backend:0.0.1-SNAPSHOT"
           imagePullPolicy: Always
   replicas: 1
   selector:
