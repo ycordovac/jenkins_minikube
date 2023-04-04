@@ -90,6 +90,7 @@ spec:
             }
             
             sh 'git clone https://github.com/ycordovac/jenkins_minikube.git configuracion --branch develop'
+            sh 'cat configuracion/k8/kubernetes-config/config'
             sh 'kubectl apply -f configuracion/k8/kubernetes-deployment/spring-boot-app/manifest.yml -n default --kubeconfig=configuracion/k8/kubernetes-config/config'
           }
         }
@@ -160,11 +161,17 @@ spec:
       stage("Quality Tests") {
         steps {
             script {
+              
+              // helm repo add sonarqube https://SonarSource.github.io/helm-chart-sonarqube
+              // helm repo update
+              // kubectl create namespace sonarqube
+              // helm upgrade --install -n sonarqube sonarqube sonarqube/sonarqube
+
               withSonarQubeEnv("sonarqube-server"){
                 sh 'mvn clean verify sonar:sonar \
                 -Dsonar.projectKey=practica-final-backend \
-                -Dsonar.host.url=http://192.168.49.3:9000 \
-                -Dsonar.login=squ_d4810d6d41f2c2c6bb7a6833a7ae0971867101f3'
+                -Dsonar.host.url=http://sonarqube-sonarqube:9000 \
+                -Dsonar.login=squ_3419f9ff214967c51aa7711e142f31722b95d17f'
               }
             }
         }
