@@ -89,8 +89,8 @@ spec:
               }
             }
             
-            sh 'git clone https://github.com/ycordovac/kubernetes-helm-docker-config.git configuracion --branch test-implementation'
-            sh 'kubectl apply -f configuracion/kubernetes-deployment/spring-boot-app/manifest.yml -n default --kubeconfig=configuracion/kubernetes-config/config'
+            sh 'git clone https://github.com/ycordovac/jenkins_minikube.git configuracion --branch develop'
+            sh 'kubectl apply -f configuracion/k8/kubernetes-deployment/spring-boot-app/manifest.yml -n default --kubeconfig=configuracion/k8/kubernetes-config/config'
           }
         }
 
