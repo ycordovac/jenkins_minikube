@@ -11,7 +11,7 @@ kind: Secret
 metadata:
   name: ca-cert
 type: Opaque
-file:
+data:
   tls.crt: ${"ca_crt"}
 ---
 apiVersion: v1
