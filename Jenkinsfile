@@ -8,7 +8,7 @@ metadata:
   name: ca-cert
 type: Opaque
 data:
-  tls.crt: readFile('/var/jenkins_home/kubeconfig/ca.crt.b64').trim()
+  tls.crt: aaa
 ---
 apiVersion: v1
 kind: Secret
@@ -16,8 +16,8 @@ metadata:
   name: client-cert
 type: Opaque
 data:
-  tls.crt: readFile('/var/jenkins_home/kubeconfig/client.crt.b64').trim()
-  tls.key: readFile('/var/jenkins_home/kubeconfig/client.key.b64').trim()
+  tls.crt: bbb
+  tls.key: ccc
 ---
 apiVersion: v1
 kind: Pod
