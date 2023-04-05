@@ -169,7 +169,7 @@ spec:
               // helm upgrade --install -n sonarqube sonarqube sonarqube/sonarqube
               sh 'curl http://localhost:9000'
 
-              withSonarQubeEnv("sonarqube-server"){
+              withSonarQubeEnv("sonarqube"){
                 sh 'mvn clean verify sonar:sonar \
                 -Dsonar.projectKey=practica-final-backend \
                 -Dsonar.host.url=http://localhost:9000 \
