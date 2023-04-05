@@ -214,7 +214,6 @@ spec:
                 version: pom.version,
                 repository: NEXUS_REPOSITORY,
                 credentialsId: NEXUS_CREDENTIAL_ID,
-                println("7")
                 artifacts: [
                 // Artifact generated such as .jar, .ear and .war files.
                 [artifactId: pom.artifactId,
@@ -227,6 +226,7 @@ spec:
                 file: "pom.xml",
                 type: "pom"]
                 ])
+                println("7")
               } else {
                 error "*** File: ${artifactPath}, could not be found"
               }
