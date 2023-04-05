@@ -167,12 +167,12 @@ spec:
               // helm repo update
               // kubectl create namespace sonarqube
               // helm upgrade --install -n sonarqube sonarqube sonarqube/sonarqube
-              sh 'curl http://sonarqube-sonarqube:9000'
+              sh 'curl http://10.107.242.71:9000'
 
               withSonarQubeEnv("sonarqube"){
                 sh 'mvn clean verify sonar:sonar \
                 -Dsonar.projectKey=practica-final-backend \
-                -Dsonar.host.url=http://sonarqube-sonarqube:9000 \
+                -Dsonar.host.url=http://10.107.242.71:9000 \
                 -Dsonar.login=squ_3419f9ff214967c51aa7711e142f31722b95d17f'
               }
               println("fin el steep de Quality Tests")
