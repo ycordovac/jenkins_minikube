@@ -167,6 +167,7 @@ spec:
               // helm repo update
               // kubectl create namespace sonarqube
               // helm upgrade --install -n sonarqube sonarqube sonarqube/sonarqube
+              sh 'curl http://localhost:9000'
 
               withSonarQubeEnv("sonarqube-server"){
                 sh 'mvn clean verify sonar:sonar \
