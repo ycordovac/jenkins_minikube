@@ -161,6 +161,7 @@ spec:
       stage("Quality Tests") {
         steps {
             script {
+              println("inicia el steep de Quality Tests")
               
               // helm repo add sonarqube https://SonarSource.github.io/helm-chart-sonarqube
               // helm repo update
@@ -173,6 +174,7 @@ spec:
                 -Dsonar.host.url=http://localhost:9000 \
                 -Dsonar.login=squ_3419f9ff214967c51aa7711e142f31722b95d17f'
               }
+              println("fin el steep de Quality Tests")
             }
         }
 		  }
