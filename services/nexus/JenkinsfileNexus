@@ -1,0 +1,65 @@
+def versionPom = ""
+pipeline{
+	agent {
+      kubernetes {
+        yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: shell
+    image: yandihlg/jenkins-nodo-java-bootcamp:latest
+    volumeMounts:
+    - mountPath: /var/run/docker.sock
+      name: docker-socket-volume
+    securityContext:
+      privileged: true
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    command:
+    - cat
+    imagePullPolicy: IfNotPresent
+    tty: true
+  volumes:
+  - name: docker-socket-volume
+    hostPath:
+      path: /var/run/docker.sock
+      type: Socket
+    command:
+    - sleep
+    args:
+    - infinity
+        '''
+        defaultContainer 'shell'
+      }
+    }
+
+    environment {
+        NEXUS_VERSION = "nexus3"
+        NEXUS_PROTOCOL = "http"
+        NEXUS_URL = "192.168.49.4:8081"
+        NEXUS_REPOSITORY = "backdevelop"
+        NEXUS_CREDENTIAL_ID = "adminnexus"
+        version=null
+        BUILD_NUMBER = 1
+    }
+	stages {
+
+        stage('Nexus deploy') {
+          steps {
+            sh "kubectl create namespace devops-tools"
+            sh "git clone -b develop https://github.com/ycordovac/jenkins_minikube.git configuracion"
+            sh "cd configuracion/services/nexus" 
+            sh "kubectl create -f nexus.yaml" 
+          }
+        }
+	}
+  }    
+
+	post {
+		always {
+			sh "docker logout"
+		}
+	}
+
+}
