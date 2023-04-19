@@ -44,13 +44,15 @@ spec:
         BUILD_NUMBER = 1
     }
 	stages {
-
         stage('Nexus deploy') {
           steps {
-            sh "kubectl create namespace devops-tools"
-            sh "git clone -b develop https://github.com/ycordovac/jenkins_minikube.git configuracion"
-            sh "cd configuracion/services/nexus" 
-            sh "kubectl create -f nexus.yaml" 
+            script {
+                sh "git clone -b develop https://github.com/ycordovac/jenkins_minikube.git configuracion"
+                sh 'cat configuracion/k8/kubernetes-config/config'
+                sh 'kubectl apply -f configuracion/services/nexus/nexus.yaml -n default --kubeconfig=configuracion/k8/kubernetes-config/config'
+                def servicios = sh (script: 'kubectl get service -n default --kubeconfig=configuracion/k8/kubernetes-config/config', returnStdout: true).trim()
+                sh 'echo ' + servicios
+            }
           }
         }
 	}

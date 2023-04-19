@@ -1,0 +1,42 @@
+//@Library(['JenkinsUtils', 'gitlib']) _
+
+@Library('JenkinsUtils')
+@Library('gitlib')
+
+import es.yan.CommandWrapper
+
+pipeline {
+    // agent {
+    //     kubernetes( kubernetesAgent(imageName: "yandihlg/jenkins-nodo-java-bootcamp:latest"))
+    // }
+    agent any
+    options {
+        timestamps()
+        // habilitar el registro
+        skipDefaultCheckout true
+        buildDiscarder logRotator(numToKeepStr: '3')
+    }
+
+    stages {
+        stage('Maven pom build') {
+            steps {
+                script{
+                    sh "pwd"
+                    //println(StringUtils.capitalize('hola mundo'))
+
+                    // def lombok=new es.yan.CommandWrapper(metadataCommand: "ln -ls")
+                    def grapperVar=lombok.call()
+                    println(grapperVar.getMetadataCommand())
+                    println(grapperVar.resultMap.get("result").toString())
+                    println(grapperVar.resultMap)
+                    //person.crearPerson( "Loco",  "martinez perez")
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Check Azure Secret') {
+            steps {
+                container('aks-builder') {
+                    sh "az login --service-principal --username 81a089a8-666a-47a6-8529-ca72ed9af6b5 --password mfg8Q~8PAf8XUTRhpmPGWBOlbsZ1Z1vpKkY3tb3G --tenant 90517e24-3338-4947-9d3b-4b6770599a67"
+                    script {
+                        def secretName = "masterjenkins-jenkins"
+                        def vaultName = "ndop-plt-develop-kv"
+                        def secretExists = azureSecretExists(vaultName, secretName)
+                        while (!secretExists){
+                            echo "Azure secret ${secretName} does not exist yet"
+                        }
+                        if (secretExists) {
+                            build job: 'jobToRun', propagate: true
+                        } 
+                    }
+                }
+            }
+        }
+    }
+    
+    triggers {
+        upstream(upstreamProjects: 'my-upstream-project', threshold: hudson.model.Result.SUCCESS)
+    }
+}
+
+def azureSecretExists(vaultName, secretName) {
+    def val = sh(script: "az keyvault secret show --vault-name ${vaultName} --name ${secretName} --query value -o tsv", returnStdout: true).trim()
+    println(val)
+    return val==null
+}
